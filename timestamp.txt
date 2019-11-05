@@ -1,0 +1,31 @@
+------------Convert timestamp to datetime.
+https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
+public static DateTime UnixTimeStampToDateTime( double unixTimeStamp )
+{
+    // Unix timestamp is seconds past epoch
+    System.DateTime dtDateTime = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
+    dtDateTime = dtDateTime.AddSeconds( unixTimeStamp ).ToLocalTime();
+    return dtDateTime;
+}
+
+
+
+------------Convert datetime to timestamp.
+https://stackoverflow.com/questions/9814060/how-to-convert-datetime-to-timestamp-using-c-net-ignoring-current-timezone
+Option1:
+
+private long ConvertToTimestamp(DateTime value)
+{
+    long epoch = (value.Ticks - 621355968000000000) / 10000000;
+    return epoch;
+}
+
+Option2:
+private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+...
+
+private static long ConvertToTimestamp(DateTime value)
+{
+    TimeSpan elapsedTime = value - Epoch;
+    return (long) elapsedTime.TotalSeconds;
+}
